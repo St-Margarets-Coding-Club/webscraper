@@ -9,6 +9,7 @@ headers = {"User-Agent":""}
 response = httpx.get(url, headers=headers)
 if response.status_code == 200:
     html = HTMLParser(response.text)
+    # content is the HTML content that will be passed to the LLM
     content = html.body.html
     print(content)
 else:
