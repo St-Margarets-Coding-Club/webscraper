@@ -65,6 +65,7 @@ button {
 
 button:hover {
         background-color: #333;
+        content: url(image/Send-gray.png);
 }
 
 .Icon {
@@ -78,3 +79,6 @@ button:hover {
         width: 20px;
 }
 
+.SendButton:hover {
+        content: url(image/Send-gray.png);
+}
