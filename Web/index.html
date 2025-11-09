@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Web Scraper</title>
+        <link 
+        rel="stylesheet" href="style.css">
+        <link 
+        rel="icon" type="image/x-icon" href="image/Icon.png">
+        <link 
+        rel="preconnect" href="https://fonts.googleapis.com">
+        <link 
+        rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link 
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+        rel="stylesheet">
+        <link rel="preload" as="image" href="/webscraper/Web/image/Send-gray.png">
+</head>
+<body>
+        <header>
+                <img class="Icon" src="image/Icon.png" alt="">
+                <h1>Web Scraper</h1>
+        </header>
+
+        <main>
+                <div id="Instruction">Input the URL of the website to scrape</div>
+                <div class="InputBox">
+                        <input id="Input" type="text" placeholder="Enter URL here" autocomplete="off"/>
+                        <button onclick="MoveDownInputBox()" class="SendButton"></button>
+                </div>
+        </main>
+        <script src="script.js"></script>
+</body>
+</html>
