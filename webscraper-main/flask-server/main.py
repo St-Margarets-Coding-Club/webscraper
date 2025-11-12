@@ -6,11 +6,11 @@ def display_welcome():
     print("Content Analysis Chat System")
     print("=" * 50)
 
-def setup_content():
+def setup_content(url):
     """Fetch and validate scraped content via webscraper.get_content()."""
     try:
         import webscraper
-        content = webscraper.get_content()
+        content = webscraper.get_content(url)
         if not content or len(content.strip()) < 10:
             print("Invalid content returned by webscraper.get_content()")
             return None
@@ -67,7 +67,6 @@ def main():
     """Main chat loop."""
     display_welcome()
 
-    processor = ContentProcessor()
     context = setup_content()
 
     if not context:
@@ -76,6 +75,7 @@ def main():
     print(f"Content loaded ({len(context)} characters)")
     print("\nGenerating summary now...")
 
+    processor = ContentProcessor()
     summary = processor.summarize_content(context)
     print(f"{summary}")
 
