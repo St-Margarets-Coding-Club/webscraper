@@ -1,0 +1,5 @@
+flask
+httpx
+selectolax
+huggingface-hub
+python-dotenv
