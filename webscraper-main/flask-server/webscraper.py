@@ -29,8 +29,16 @@ def get_content(url: str = None, headers: dict = None) -> str | None:
         tree = HTMLParser(response.text)
         # prefer just the text of the body (no scripts/styles); use html if you need markup
         if tree.body is None:
-            return tree.html  # fallback to whole document
-        return tree.body.html or tree.body.text()
+            content = tree.html
+        else:
+            # Try to get text content first, fall back to HTML
+            text_content = tree.body.text()
+            content = text_content if text_content and text_content.strip() else tree.body.html
+        
+        if not content or not content.strip():
+            print("Warning: No content extracted from parsed HTML")
+            return None
+        return content
     except Exception as e:
         print(f"Failed to parse HTML: {e}")
         return None
