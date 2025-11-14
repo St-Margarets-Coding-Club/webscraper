@@ -5,53 +5,82 @@ const Input = document.getElementById("Input");
 // This variable will be 'true' initially and we'll set it to 'false' after the first message.
 let isFirstMessage = true;
 
-// Move down inputbox (This function is now only for the first-time setup)
-// function MoveDownInputBox() {
-//       const Instruction = document.getElementById("Instruction");
-//       if (Instruction) Instruction.remove();
-
-//        Input.placeholder = "Message...";
-//          Input.value = '';
-// }
+// Keep last scraped context so the user can ask follow-up questions
+let lastContext = null;
 
 // Send button click
-SendButton.addEventListener('click', () => {
-        const input = document.getElementById("Input");
-        const text = input.value;
-        fetch("/scrap?url=" + text).then(res => {
-                res.json().then(data => {
-                        console.info(data);
-                        if (data) {
-                                const contextWindow = document.getElementById("ContextWindow");
-                                // Create and append assistant placeholder div
-                                const assistantDiv = document.createElement('div');
-                                assistantDiv.classList.add('context-item', 'assistant');
-                                assistantDiv.innerHTML = '<span class="thinking">Thinking...</span>';
-                                contextWindow.appendChild(assistantDiv);
+SendButton.addEventListener('click', async () => {
+        const text = Input.value.trim();
+        const contextWindow = document.getElementById("ContextWindow");
 
-                                // Create and append user message div
-                                const userDiv = document.createElement('div');
-                                userDiv.classList.add('context-item', 'user');
-                                userDiv.innerText = data.data;
-                                contextWindow.appendChild(userDiv);
+        if (!text) {
+                // show a small inline message instead of sending empty requests
+                const err = document.createElement('div');
+                err.classList.add('context-item', 'error');
+                err.innerText = 'Please enter a URL to scrape.';
+                contextWindow.appendChild(err);
+                contextWindow.scrollTop = contextWindow.scrollHeight;
+                return;
+        }
 
-                                
+        // Append user message immediately
+        const userDiv = document.createElement('div');
+        userDiv.classList.add('context-item', 'user');
+        userDiv.innerText = text;
+        contextWindow.appendChild(userDiv);
 
-                                contextWindow.scrollTop = contextWindow.scrollHeight;
+        // Create and append assistant placeholder div
+        const assistantDiv = document.createElement('div');
+        assistantDiv.classList.add('context-item', 'assistant');
+        assistantDiv.innerHTML = '<span class="thinking">Thinking...</span>';
+        contextWindow.appendChild(assistantDiv);
+        contextWindow.scrollTop = contextWindow.scrollHeight;
 
-                                // Clear input and focus for the next message
-                                Input.value = '';
-                                Input.focus();
+        try {
+                // If input looks like a URL, call /scrap; otherwise treat it as a follow-up question
+                const isUrl = /^https?:\/\//i.test(text);
+                if (isUrl) {
+                        const encoded = encodeURIComponent(text);
+                        const res = await fetch(`/scrap?url=${encoded}`);
+                        let payload = null;
+                        try { payload = await res.json(); } catch (e) { console.error('Failed to parse JSON response', e); }
+
+                        if (!res.ok) {
+                                const message = payload && payload.error ? payload.error : `Request failed: ${res.status}`;
+                                assistantDiv.innerText = message;
+                        } else {
+                                const reply = payload && payload.data ? payload.data : 'No data returned.';
+                                assistantDiv.innerText = reply;
+                                // store the full context for follow-ups
+                                lastContext = payload && payload.context ? payload.context : null;
                         }
+                } else {
+                        // follow-up question flow
+                        if (!lastContext) {
+                                assistantDiv.innerText = 'No context available. Please enter a URL first to scrape.';
+                        } else {
+                                const encodedQ = encodeURIComponent(text);
+                                const res = await fetch(`/ask?question=${encodedQ}`);
+                                let payload = null;
+                                try { payload = await res.json(); } catch (e) { console.error('Failed to parse JSON response', e); }
 
-                }).catch(e => {
-                        console.error(e);
-                })
-        }).catch(e => {
-                console.error(e);
-        });
+                                if (!res.ok) {
+                                        const message = payload && payload.error ? payload.error : `Request failed: ${res.status}`;
+                                        assistantDiv.innerText = message;
+                                } else {
+                                        const reply = payload && payload.data ? payload.data : 'No answer returned.';
+                                        assistantDiv.innerText = reply;
+                                }
+                        }
+                }
 
- 
+        } catch (err) {
+                console.error(err);
+                assistantDiv.innerText = 'Network error while contacting server.';
+        } finally {
+                Input.value = '';
+                Input.focus();
+        }
 });
 
 // Enter key handling
