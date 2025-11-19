@@ -31,15 +31,9 @@ main {
         padding: 20px;
 }
 
-#Instruction {
-        color: black;
-        margin-bottom: 12px;
-        font-size: 3rem;
-        font-family: "JetBrains Mono", monospace;
-}
-
 .InputBox {
-        position: relative;
+        position: sticky;
+        bottom: 0.75rem;
         top: 0px;
         display: flex;
         align-items: center;
