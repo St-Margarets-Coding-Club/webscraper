@@ -126,4 +126,6 @@ def get_resource(path):  # pragma: no cover
 
 
 if __name__=="__main__":
-    app.run(debug=False)
+    from waitress import serve
+    print("Starting server on http://0.0.0.0:8000")
+    serve(app, host='0.0.0.0', port=8000, threads=4)
