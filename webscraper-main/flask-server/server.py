@@ -24,7 +24,7 @@ def get_file(filename):  # pragma: no cover
 
 
 @app.route('/', methods=['GET'])
-def metrics():  # pragma: no cover
+def metrics():
     content = get_file('index.html')
     return Response(content, mimetype="text/html")
 
@@ -126,4 +126,4 @@ def get_resource(path):  # pragma: no cover
 
 
 if __name__=="__main__":
-    app.run(debug=True)
+    app.run(debug=False)
