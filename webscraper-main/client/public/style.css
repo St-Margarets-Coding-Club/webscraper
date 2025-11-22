@@ -32,11 +32,10 @@ main {
 }
 
 .InputBox {
-        position: sticky;
-        bottom: 0.75rem;
-        top: 0px;
+        position: relative;
+        height: fit-content;
+        bottom: -20rem;
         display: flex;
-        align-items: center;
         width: 100%;
         max-width: 500px;
         border: 1px solid #ccc;
@@ -76,7 +75,14 @@ input[type="text"] {
       animation: MoveDownInputBox 1s forwards;
 }
 
-@keyframes MoveDownInputBox {
-        from { top: 0px; }      
-        to   { top: 330px; }
+.user {
+        background-color: lightcyan;
+        align-self: flex-start;
+        margin: 10px;
+}
+
+.assistant {
+        background-color: rgba(229, 229, 229, 0.329);
+        align-self: flex-end;
+        margin: 10px;
 }
