@@ -1,5 +1,5 @@
 body {
-        font-family: Arial, sans-serif;
+        font-family: "JetBrains Mono", monospace;
         margin: 0;
         padding: 0;
         display: flex;
@@ -21,26 +21,14 @@ header h1 {
         font-family: "JetBrains Mono", monospace;
 }
 
-main {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding: 20px;
-}
-
 .InputBox {
-        position: relative;
-        height: fit-content;
-        bottom: -20rem;
         display: flex;
-        width: 100%;
-        max-width: 500px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        overflow: hidden;
+        flex-direction: row;
+        position: sticky;
+        bottom: 0.75rem;
+        background: transparent;
+        margin-top: 50rem;
+        padding: 0;
 }
 
 input[type="text"] {
@@ -71,18 +59,23 @@ input[type="text"] {
         background-image: url('image/Send-gray.png');
 }
 
-.Move_Down {
-      animation: MoveDownInputBox 1s forwards;
+.ContextWindow {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        max-height: calc(100vh - 220px);
 }
 
 .user {
         background-color: lightcyan;
         align-self: flex-start;
         margin: 10px;
+        border-radius: 1rem;
 }
 
 .assistant {
         background-color: rgba(229, 229, 229, 0.329);
         align-self: flex-end;
         margin: 10px;
+        border-radius: 1rem;
 }
