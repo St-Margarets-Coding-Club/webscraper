@@ -2,7 +2,8 @@
 
 A GUI Webscraper website
 
-![image](https://github.com/user-attachments/assets/25126c0c-f587-4b09-aa56-044ea958f75e)
+![image](https://github.com/user-attachments/assets/825b7ed0-4a29-4112-abca-190f2158749c)
+
 
 ## Features
 
